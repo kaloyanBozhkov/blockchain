@@ -6,7 +6,7 @@ import Block from '../components/Block/Block'
 import Button from '../components/Button/Button'
 import Header from '../components/Header/Header'
 import Label from '../components/Label/Label'
-
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner'
 import Wave from '../components/Wave/Wave'
 
 
@@ -22,14 +22,12 @@ const checkValidity = (chain, blockchain) => {
 }
 
 //handle addition of new block to blockchain, and render trigger
-const addBlock = (setChain, blockchain, difficulty) => {
+const addBlock = (blockchain, difficulty) => {
   const data = prompt('Block data:')
 
   if (data) {
 
     blockchain.addBlock(data, difficulty)
-
-    setChain([...blockchain.chain])
   }
 }
 
@@ -50,33 +48,45 @@ const onEditBlock = (blockTimestamp, newDataValue, blockchain, setChain) => {
   })
 
   setChain([...blockchain.chain])
-
-  console.log(blockchain)
 }
 
 const onSetDifficulty = (setDifficulty) => setDifficulty(parseFloat(prompt('Choose difficulty')) || 1)
 
 
 export default function App() {
+
+  //loading icon, for when mining block
+  const [loading, setLoading] = useState(false)
+
   //persist blockchain obj through re-renders
-  const blockchain = useRef(new Blockchain())
+  const blockchain = useRef(new Blockchain(setLoading))
 
   //have a chain arr that is in state to trigger updates
   const [chain, setChain] = useState([...blockchain.current.chain])
 
+
   //difficulty of blockchain
   const [difficulty, setDifficulty] = useState(1)
 
+
+  //when loading finishes, block has finished mining, can add it to state chain
+  useEffect(() => {
+    if (!loading) {
+      setChain([...blockchain.current.chain])
+    }
+  }, [loading])
+
   //log blockchain on each render
   useEffect(() => {
-    console.log(blockchain)
+    console.log('blockchain obj: ', blockchain)
   })
 
   return (
     <div className="App">
+      {loading ? <LoadingSpinner /> : null}
       <Header />
       <section data-title="Blockchain controls:" className="controls">
-        <Button label="Add new block" action={() => addBlock(setChain, blockchain.current, difficulty)} />
+        <Button label="Add new block" action={() => addBlock(blockchain.current, difficulty, setLoading)} />
         <Button label="Check validity" action={() => checkValidity(chain, blockchain.current)} />
       </section>
       <section data-title="Blockchain configuartion:" className="config">

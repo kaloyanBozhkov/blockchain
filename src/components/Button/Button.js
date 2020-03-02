@@ -2,10 +2,9 @@ import React from 'react'
 
 import styles from './button.module.scss'
 
-const Button = ({ label, action, modifier = '', isActive = false }) => {
+const Button = ({ label, action, modifier = 'button', isActive = false }) => {
   const classes = [
-    modifier === '' ? styles.button : '',
-    modifier !== ''  && styles.hasOwnProperty(modifier) ? styles[modifier] : '',
+    styles[modifier] || '',
     isActive ? styles.activeBtn : '',
   ].join(' ').trim()
 

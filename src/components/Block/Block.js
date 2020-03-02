@@ -1,10 +1,29 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import styles from './block.module.scss'
 
 import Button from '../Button/Button'
 
+  
+//controls handlers
+const onEditClick = (editing, setEditing, onEditBlock, timestamp, inputField) => {
+  
+  //is in editing mode, now click is to save
+  if (editing) {
+
+    //using timestamp to check for block, since hash will be changing on data change
+    onEditBlock(timestamp, inputField.value)
+  }
+
+  setEditing(!editing)
+}
+
+const onDeleteBlockClick = (onDeleteBlock, hash) => {
+  if (window.confirm('Delete block?')) {
+    onDeleteBlock(hash)
+  }
+}
 const Block = ({
   timestamp,
   nonce,
@@ -25,24 +44,14 @@ const Block = ({
   const minutes = new Date(timestamp).getMinutes()
   const displayDate = new Date(timestamp).toDateString()
   const getDisplayTime = (timestamp, withMilliseconds = false) => `${new Date(timestamp).getHours()}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}${withMilliseconds ? ' and ' + new Date(timestamp).getMilliseconds() + 'ms': ''}`
-  
-  //controls handlers
-  const onEditClick = () => {
+
+  useEffect(() => {
     
-    //is in editing mode, now click is to save
+    //if in editing mode, set textarea to be height = to its contents
     if (editing) {
-
-      //using timestamp to check for block, since hash will be changing on data change
-      onEditBlock(timestamp, dataInput.current.value)
+      dataInput.current.setAttribute('style', `height:${dataInput.current.scrollHeight}px`)
     }
-
-    setEditing(!editing)
-  }
-  const onDeleteBlockClick = () => {
-    if (window.confirm('Delete block?')) {
-      onDeleteBlock(hash)
-    }
-  }
+  }, [editing])
 
   return (
     <div className={styles.block}>
@@ -65,8 +74,8 @@ const Block = ({
       </div>
       <p data-title="Previous Hash">{previousHash}</p>
       <div className={styles.blockControls} data-title="Block Controls">
-       <Button modifier="editBlockButton" action={onEditClick} isActive={editing} label={editing ? 'Save Edits' : 'Edit Data'} />
-       <Button modifier="deleteBlockButton" label="Delete Block" action={onDeleteBlockClick} />
+       <Button modifier="editBlockButton" action={() => onEditClick(editing, setEditing, onEditBlock, timestamp, dataInput.current)} isActive={editing} label={editing ? 'Save Edits' : 'Edit Data'} />
+       <Button modifier="deleteBlockButton" label="Delete Block" action={() => onDeleteBlockClick(onDeleteBlock, hash)} />
       </div>
     </div>
   )

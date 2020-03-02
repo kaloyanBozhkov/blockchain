@@ -1,20 +1,18 @@
 import Block from './Block'
 
 class Blockchain {
-	constructor(difficulty = 1) {
-		this.chain = [this.createGenesisBlock()]
+	constructor(setLoading, difficulty = 1) {
 		this.difficulty = difficulty
-	}
-
-	createGenesisBlock() {
-		return new Block('Genesis block', 'none', 2)
+		this.setLoading = setLoading
+		this.chain = []
 	}
 
 	addBlock(data, difficulty = 0) {
 		this.chain.push(new Block(
 			(this.chain.length ? data : `Genesis block, ${data}`),
 			(this.chain.length ? this.getLatestBlock().hash : 'none'),
-			difficulty || this.difficulty
+			difficulty || this.difficulty,
+			this.setLoading
 		))
 	}
 

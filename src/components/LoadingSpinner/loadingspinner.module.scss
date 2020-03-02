@@ -1,0 +1,54 @@
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}
+.spinner {
+    position: fixed;
+    z-index:1;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0, .3);
+    color: white;
+
+    font-size:2rem;
+    svg {
+        font-size:4rem;
+        margin-bottom:1rem;
+        animation-name: spin;
+        animation-iteration-count: infinite;
+        animation-duration: 1s;
+        animation-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 1;
+    }
+
+    p {
+        text-align: center;
+        line-height: 3rem;
+        z-index: 1;
+    }
+
+    &::before {
+        position: fixed;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        right:0;
+        bottom:0;
+        top:50%;
+        content: '';    
+        background-color: rgba(0,0,0, .3);
+        border-radius: 50%;
+        width:30rem;
+        height:30rem;
+        z-index: 0;
+    }
+}

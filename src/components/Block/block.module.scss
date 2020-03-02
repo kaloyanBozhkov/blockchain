@@ -63,6 +63,7 @@
 
   p {
     overflow: auto;
+    word-break: break-word;
   }
 
   > div:not(.blockControls) > p,
