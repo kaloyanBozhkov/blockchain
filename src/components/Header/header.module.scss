@@ -1,0 +1,42 @@
+@import '../../scss/variables.scss';
+
+@keyframes slideIn{
+    0%{
+        transform: translateY(-100%)
+    }
+    100%{
+        transform: translateY(0%)
+    }
+}
+
+.header {
+    animation-name: slideIn;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+
+    background: $blue;
+    color:white;
+    width: 100%;
+    box-shadow: 0 1px 4px 2px rgba(0, 0, 0, 0.25);
+    @media (min-width:700px) {
+        max-width: 50rem;
+    }
+
+    padding:1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    > h1 {
+        margin: 1rem;
+        font-size:3rem;
+        &::before, &::after{
+            content: '-';
+            padding:1rem;
+        }
+    }
+    > p {
+        font-size:2rem;
+        margin-bottom: 1rem;
+    }
+  }

@@ -1,0 +1,70 @@
+@import "../../scss/variables.scss";
+
+.button {
+    background-color: $blue;
+    color: white;
+    font-size: 2rem;
+    padding: 1.5rem 2rem;
+
+    display: inline-block;
+    text-align: center;
+    border-radius: 4px;
+
+    cursor: pointer;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.35);
+    transition: 0.2s;
+
+    &:hover {
+      transform: translateY(2px);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.35);
+    }
+}
+
+.editBlockButton,
+.deleteBlockButton {
+  width: 40%;
+  background: none;
+  outline: none;
+  border: none;
+  color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 1rem;
+  transition: 0.4s;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.editBlockButton {
+  background-color: darken($blue, 15%);
+  border-color:  darken($blue, 30%);
+
+  &.activeBtn {
+    background-color: $green;
+    border-color: darken($green, 15%);
+    &:hover,
+    &:active {
+      background-color: darken($green, 15%);
+    }
+  }
+  &:not(.activeBtn) {
+    &:hover,
+    &:active {
+      background-color: lighten($blue, 15%);
+    }
+  }
+}
+
+.deleteBlockButton {
+  background-color: lighten($red, 10%);
+  border-color: $red;
+  &:hover,
+  &:active {
+    background-color: darken($red, 5%);
+  }
+}

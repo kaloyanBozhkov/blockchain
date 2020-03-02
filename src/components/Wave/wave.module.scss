@@ -1,0 +1,59 @@
+@import "../../scss/variables.scss";
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%) rotate(180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%) rotate(180deg);
+    opacity: 1;
+  }
+}
+.decoratorWave {
+  height: 100%;
+  width: 0%;
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+
+  @media (max-width: 699px) {
+    display: none;
+  }
+  @media (min-width: 700px) and (max-width: 939px) {
+    width: 10%;
+  }
+  @media (min-width: 940px) {
+    width: 20%;
+  }
+  
+  animation-duration: 1s;
+  animation-delay: .6s;
+  animation-fill-mode: forwards;
+
+  &.right {
+    right: 0;
+    transform: translateX(100%);
+    animation-name: slideInRight;
+  }
+  
+  &.left {
+    left: 0;
+    transform: rotate(180deg) translateX(100%);
+    animation-name: slideInLeft;
+  }
+
+  svg path {
+    fill: $blue;
+  }
+}
