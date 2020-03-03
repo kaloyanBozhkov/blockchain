@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { CSSTransition } from 'react-transition-group'
 
 import styles from './block.module.scss'
-
 import Button from '../Button/Button'
-
   
 //controls handlers
 const onEditClick = (editing, setEditing, onEditBlock, timestamp, inputField) => {
@@ -24,17 +23,8 @@ const onDeleteBlockClick = (onDeleteBlock, hash) => {
     onDeleteBlock(hash)
   }
 }
-const Block = ({
-  timestamp,
-  nonce,
-  data,
-  hash,
-  previousHash,
-  hashDifficulty,
-  generationTime: { start, end },
-  onDeleteBlock,
-  onEditBlock
-}) => {
+
+const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, generationTime: { start, end }, onDeleteBlock, onEditBlock }) => {
   
   const [editing, setEditing] = useState(false)
   const dataInput = useRef(null)
@@ -54,7 +44,7 @@ const Block = ({
   }, [editing])
 
   return (
-    <div className={styles.block}>
+    <div className={styles.block} id={hash}>
       <p>
         <span>{displayDate}</span>
         <span>{getDisplayTime(timestamp)}</span>
@@ -72,7 +62,7 @@ const Block = ({
       <div>
         {editing ? <div data-title="Data (editing enabled, write something!)" className={styles.textareaWrapper}><textarea defaultValue={JSON.parse(data)} ref={dataInput} /></div> : <p data-title="Data">"{JSON.parse(data)}"</p>}
       </div>
-      <p data-title="Previous Hash">{previousHash}</p>
+      <p data-title="Previous Hash" onClick={() => window.location.hash = hash}>{previousHash}</p>
       <div className={styles.blockControls} data-title="Block Controls">
        <Button modifier="editBlockButton" action={() => onEditClick(editing, setEditing, onEditBlock, timestamp, dataInput.current)} isActive={editing} label={editing ? 'Save Edits' : 'Edit Data'} />
        <Button modifier="deleteBlockButton" label="Delete Block" action={() => onDeleteBlockClick(onDeleteBlock, hash)} />
@@ -80,6 +70,22 @@ const Block = ({
     </div>
   )
 }
+
+const AnimateBlock = (props) => (
+  <CSSTransition
+    key={props.hash}
+    timeout={10000}
+    in={true}
+    mountOnEnter
+    unmountOnExit
+    classNames={{
+      enterActive: styles.entering,
+      exitActive: styles.exiting
+    }}
+  >
+    <Block {...props} />
+  </CSSTransition>
+)
 
 Block.propTypes = {
   timestamp: PropTypes.number.isRequired,
@@ -96,4 +102,4 @@ Block.propTypes = {
   onEditBlock: PropTypes.func.isRequired
 }
 
-export default Block
+export default AnimateBlock

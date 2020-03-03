@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { CSSTransition } from 'react-transition-group'
 
 import Blockchain from '../classes/Blockchain'
 import Block from '../components/Block/Block'
@@ -7,8 +6,8 @@ import Button from '../components/Button/Button'
 import Header from '../components/Header/Header'
 import Label from '../components/Label/Label'
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner'
+import GenerationComments from '../components/GenerationComments/GenerationComments'
 import Wave from '../components/Wave/Wave'
-
 
 //handle blockchain validity check
 const checkValidity = (chain, blockchain) => {
@@ -57,22 +56,27 @@ export default function App() {
 
   //loading icon, for when mining block
   const [loading, setLoading] = useState(false)
+  const generationLog = useRef([])
 
   //persist blockchain obj through re-renders
-  const blockchain = useRef(new Blockchain(setLoading))
+  const blockchain = useRef(new Blockchain(setLoading, generationLog))
 
   //have a chain arr that is in state to trigger updates
   const [chain, setChain] = useState([...blockchain.current.chain])
 
-
   //difficulty of blockchain
   const [difficulty, setDifficulty] = useState(1)
-
 
   //when loading finishes, block has finished mining, can add it to state chain
   useEffect(() => {
     if (!loading) {
       setChain([...blockchain.current.chain])
+
+      //log the generation log, in case needed
+      console.log('block generation log', generationLog.current)
+
+      //reset
+      generationLog.current = []
     }
   }, [loading])
 
@@ -83,7 +87,10 @@ export default function App() {
 
   return (
     <div className="App">
-      {loading ? <LoadingSpinner /> : null}
+      {loading ? (<>
+      <LoadingSpinner /> 
+      <GenerationComments getGeneratorLog={() => generationLog.current} /> 
+      </>) : null}
       <Header />
       <section data-title="Blockchain controls:" className="controls">
         <Button label="Add new block" action={() => addBlock(blockchain.current, difficulty, setLoading)} />
@@ -94,22 +101,17 @@ export default function App() {
       </section>
       <section data-title="Blockchain blocks:" className="blocks">
         {chain.length > 0 ? (
-          chain.map((block) => 
-            (<CSSTransition
+          chain.map((block) =>
+            (<Block
                 key={block.hash}
-                timeout={300}
-                classNames="ok"
-              >
-                <Block 
-                  {...block} 
-                  onDeleteBlock={(blockHash) => onDeleteBlock(blockHash, setChain, blockchain.current)} 
-                  onEditBlock={(blockTimestamp, newDataValue) => onEditBlock(blockTimestamp, newDataValue, blockchain.current, setChain)}
-                />
-              </CSSTransition>)
-            )
+                {...block}
+                onDeleteBlock={(blockHash) => onDeleteBlock(blockHash, setChain, blockchain.current)}
+                onEditBlock={(blockTimestamp, newDataValue) => onEditBlock(blockTimestamp, newDataValue, blockchain.current, setChain)}
+              />)
+          )
         ) : (
-          <Label labelText="No blocks in the blockchain." />
-        )}
+            <Label labelText="No blocks in the blockchain, add some!" />
+          )}
       </section>
       <Wave position="right" />
       <Wave position="left" />

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import styles from './wave.module.scss'
 
 const waveConfig = {
-    waveDelta: 15,                   
+    waveDelta: 25,                   
     speed: 0.55,                  
     wavePoints: 8,                  
 }

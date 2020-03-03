@@ -1,6 +1,8 @@
 @import "../../scss/variables.scss";
-
+@import "../../scss/mixins.scss";
 .block {
+  @include enterAnimation();
+
   width: 100%;
   background-color: $blue;
   color: white;
@@ -86,5 +88,11 @@
       flex-basis: 100%;
       font-size: 1.5rem;
     }
+  }
+
+  &.entering,
+  &.exiting {
+    transform: scale(0.2);
+    display: none;
   }
 }

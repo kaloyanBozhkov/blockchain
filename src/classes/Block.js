@@ -1,7 +1,7 @@
 import SHA256 from 'crypto-js/sha256'
 
 class Block {
-  constructor(data, previousHash = '', difficulty = 0, setLoading = f => f) {
+  constructor(data, previousHash = '', difficulty = 0, setLoading = f => f,  generationLog = null) {
     this.previousHash = previousHash
     this.timestamp = +new Date()
     this.data = JSON.stringify(data)
@@ -9,12 +9,12 @@ class Block {
       start: null,
       end: null
     }
-    this.setLoading = setLoading
-    this.hash = this.calculateHash()
+    this.hash = 'to be mined'
     this.nonce = 0
     this.hashDifficulty = difficulty
+    this.setLoading = setLoading
+    this.generationLog = generationLog
     this.mineBlock(difficulty)
-    console.log(setLoading)
   }
 
   calculateHash() {
@@ -27,7 +27,6 @@ class Block {
   }
 
   mineBlock(difficulty) {
-    //start loading for mining process
     this.setLoading(true)
 
     this.generationTime.start = +new Date()
@@ -36,7 +35,6 @@ class Block {
       this.nonce++
       this.hash = this.calculateHash()
     }
-
 
     //using a generator to make sure while loop is non-blocking, allowing GUI to continue animating and being user friendly, instead of freezing screen while mining!
     function * generateCorrectHash() {
@@ -53,8 +51,12 @@ class Block {
 
     //start generating new hash, new generation on each req anim frame in event loop
     const loopGenerator = () => window.requestAnimationFrame(() => {
-      console.log('generating new:', this.hash, this.nonce)
-      
+
+      //add log to generationLog ref, for output on loading screen & avoid re-rendering
+      if (this.generationLog && this.generationLog.current) {
+        this.generationLog.current.push(`generated new hash: ${this.hash}, on try: ${this.nonce}`)
+      }
+
       if (!boundGenerator.next().done) {
         loopGenerator()
       } else {

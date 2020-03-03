@@ -1,0 +1,13 @@
+@keyframes enter {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@mixin enterAnimation () {
+    animation-name: enter;
+    animation-duration: .5s;
+}

@@ -1,18 +1,20 @@
 import Block from './Block'
 
 class Blockchain {
-	constructor(setLoading, difficulty = 1) {
+	constructor(setLoading, generationLog, difficulty = 1) {
 		this.difficulty = difficulty
 		this.setLoading = setLoading
+		this.generationLog = generationLog
 		this.chain = []
 	}
 
 	addBlock(data, difficulty = 0) {
 		this.chain.push(new Block(
 			(this.chain.length ? data : `Genesis block, ${data}`),
-			(this.chain.length ? this.getLatestBlock().hash : 'none'),
+			(this.chain.length ? this.getLatestBlock().hash : 'none, this is genesis block!'),
 			difficulty || this.difficulty,
-			this.setLoading
+			this.setLoading,
+			this.generationLog
 		))
 	}
 
