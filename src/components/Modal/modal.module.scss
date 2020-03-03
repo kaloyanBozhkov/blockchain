@@ -1,0 +1,70 @@
+@import "../../scss/variables.scss";
+@import "../../scss/mixins.scss";
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    @include enterAnimation();
+
+    background-color: white;
+    border: 2px solid $blue;
+    width: 90%;
+    min-height: 10rem;
+    max-height: 40rem;
+    max-width: 50rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .title {
+      margin: 0;
+      padding: 1rem;
+      color: white;
+      background-color: $blue;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .description {
+      color: $blue;
+      font-size: 1.5rem;
+      padding: 2rem 1rem;
+    }
+
+    textarea {
+      outline: none;
+      border: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
+      margin: 0rem 1rem 2rem 1rem;
+      height: 8rem;
+      resize: vertical;
+      max-height:30rem;
+      padding: 1rem;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: stretch;
+      align-items: stretch;
+      > div {
+        flex: 1;
+        border-radius: 0;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

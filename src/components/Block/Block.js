@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { CSSTransition } from 'react-transition-group'
 
 import styles from './block.module.scss'
 import Button from '../Button/Button'
@@ -71,22 +70,6 @@ const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, gen
   )
 }
 
-const AnimateBlock = (props) => (
-  <CSSTransition
-    key={props.hash}
-    timeout={10000}
-    in={true}
-    mountOnEnter
-    unmountOnExit
-    classNames={{
-      enterActive: styles.entering,
-      exitActive: styles.exiting
-    }}
-  >
-    <Block {...props} />
-  </CSSTransition>
-)
-
 Block.propTypes = {
   timestamp: PropTypes.number.isRequired,
   nonce: PropTypes.number.isRequired,
@@ -102,4 +85,4 @@ Block.propTypes = {
   onEditBlock: PropTypes.func.isRequired
 }
 
-export default AnimateBlock
+export default Block
