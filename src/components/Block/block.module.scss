@@ -81,12 +81,13 @@
     }
   }
 
-  .blockControls {
+  > div.blockControls:last-of-type {
     flex-wrap: wrap;
     font-size: 1.5rem;
     &::before {
       flex-basis: 100%;
       font-size: 1.5rem;
+      margin-bottom: 1rem;
     }
   }
 

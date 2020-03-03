@@ -24,11 +24,32 @@ body,
   height: 100%;
 }
 
+@keyframes slideUp {
+  0% {
+    transform: translateY(200px) ;
+    opacity:0;
+  }
+  30% {
+    transform: translateY(200px) ;
+    opacity:0;
+  }
+  100% {
+    transform: translateY(0) ;
+    opacity:1;
+  }
+}
+
 .App {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
+  > section {
+   animation-name: slideUp;
+   animation-duration: 1.5s;
+
+  }
 
   section {
     margin-top: 2rem;
