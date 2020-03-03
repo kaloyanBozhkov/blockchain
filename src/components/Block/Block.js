@@ -17,11 +17,6 @@ const onEditClick = (editing, setEditing, onEditBlock, timestamp, inputField) =>
   setEditing(!editing)
 }
 
-const onDeleteBlockClick = (onDeleteBlock, hash) => {
-  if (window.confirm('Delete block?')) {
-    onDeleteBlock(hash)
-  }
-}
 
 const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, generationTime: { start, end }, onDeleteBlock, onEditBlock }) => {
   
@@ -64,7 +59,7 @@ const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, gen
       <p data-title="Previous Hash" onClick={() => window.location.hash = hash}>{previousHash}</p>
       <div className={styles.blockControls} data-title="Block Controls">
        <Button modifier="editBlockButton" action={() => onEditClick(editing, setEditing, onEditBlock, timestamp, dataInput.current)} isActive={editing} label={editing ? 'Save Edits' : 'Edit Data'} />
-       <Button modifier="deleteBlockButton" label="Delete Block" action={() => onDeleteBlockClick(onDeleteBlock, hash)} />
+       <Button modifier="deleteBlockButton" label="Delete Block" action={() => onDeleteBlock(hash)} />
       </div>
     </div>
   )

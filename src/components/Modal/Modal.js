@@ -2,13 +2,13 @@ import React, { useRef, useEffect } from 'react'
 import styles from './modal.module.scss'
 import Button from '../Button/Button'
 
-const Modal = ({ title, description, setModalConfig, buttonLabel = null, action = null }) => {
+const Modal = ({ title, description, setModalConfig, withInput = true, buttonLabel = null, action = null, modifier = '' }) => {
     const inputRef = useRef(null)
 
     const closeModal = () => setModalConfig(null)
 
     const onActionClick = () => {
-        action(inputRef.current.value)
+        action(withInput ? inputRef.current.value : undefined)
         setModalConfig(null)
     }
 
@@ -19,16 +19,23 @@ const Modal = ({ title, description, setModalConfig, buttonLabel = null, action 
         }
     }, [])
 
+
+    const classes = [
+        styles.modal,
+        //modifier
+        styles[modifier] || ''
+    ].join(' ').trim()
+
     return (
 
-        <div className={styles.modal}>
+        <div className={classes}>
             <div className={styles.content}>
                 <h1 className={styles.title}>{title}</h1>
                 <p className={styles.description}>{description}</p>
 
                 {action && buttonLabel && (
                     <>
-                        <textarea ref={inputRef} />
+                        {withInput && <textarea ref={inputRef} />}
                         <div className={styles.controls}>
                             <Button label={buttonLabel} action={onActionClick} modifier="editBlockButton" />
                             <Button label="Cancel" action={closeModal} modifier="deleteBlockButton" />
@@ -38,7 +45,7 @@ const Modal = ({ title, description, setModalConfig, buttonLabel = null, action 
 
                 {!action && !buttonLabel && (
                     <div className={styles.controls}>
-                        <Button label="Ok" action={closeModal} modifier="editBlockButton" />
+                        <Button label="Ok" action={closeModal} modifier={modifier === 'error' ? 'deleteBlockButton' : 'editBlockButton'} />
                     </div>
                 )}
             </div>

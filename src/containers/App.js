@@ -14,10 +14,13 @@ import Modal from '../components/Modal/Modal'
 const checkValidity = (setModalConfig, chain, blockchain) => {
 
   if (chain.length > 0) {
+    const validity = blockchain.isChainValid()
+
     setModalConfig({
-      title: 'Blockchain is ' + (blockchain.isChainValid() ? 'valid!' : 'invalid!'),
-      description: 'Blockchain validity is checked by comparing the hashes or each block (previous hash and current hash), as well as re-calculating individual block hash.',
+      title: 'Blockchain is ' + (validity ? 'valid!' : 'invalid!'),
+      description: 'Blockchain validity is checked by comparing the hashes or each block (previous hash and current hash), as well as re-calculating individual block hash with its current data.',
       setModalConfig,
+      modifier: validity ? undefined : 'error'
     })
   } else {
     setModalConfig({
@@ -44,10 +47,19 @@ const addBlock = (setModalConfig, blockchain, difficulty) => {
   })
 }
 
-const onDeleteBlock = (blockHash, setChain, blockchain) => {
-  blockchain.chain = blockchain.chain.filter((block) => block.hash !== blockHash)
+const onDeleteBlock = (setModalConfig, blockHash, setChain, blockchain) => {
+  setModalConfig({
+    title: 'Delete block?',
+    description: 'If you delete a block the bockchain will not be valid anymore, are you sure you wish to continue?',
+    setModalConfig,
+    buttonLabel: "Delete Block",
+    action: () => {
+      blockchain.chain = blockchain.chain.filter((block) => block.hash !== blockHash)
+      setChain([...blockchain.chain])
+    },
+    withInput: false
+  })
 
-  setChain([...blockchain.chain])
 }
 
 const onEditBlock = (blockTimestamp, newDataValue, blockchain, setChain) => {
@@ -114,7 +126,7 @@ export default function App() {
 
   return (
     <div className="App">
-      {modalConfig && <Modal {...modalConfig} /> }
+      {modalConfig && <Modal {...modalConfig} />}
       {loading ? (<>
         <LoadingSpinner />
         <GenerationComments getGeneratorLog={() => generationLog.current} />
@@ -133,7 +145,7 @@ export default function App() {
             (<Block
               key={block.hash}
               {...block}
-              onDeleteBlock={(blockHash) => onDeleteBlock(blockHash, setChain, blockchain.current)}
+              onDeleteBlock={(blockHash) => onDeleteBlock(setModalConfig, blockHash, setChain, blockchain.current)}
               onEditBlock={(blockTimestamp, newDataValue) => onEditBlock(blockTimestamp, newDataValue, blockchain.current, setChain)}
             />)
           )
