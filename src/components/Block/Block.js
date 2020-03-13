@@ -24,10 +24,12 @@ const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, gen
   const dataInput = useRef(null)
 
   //display related logic
-  const seconds = ('0' + new Date(timestamp).getSeconds()).slice(-2),
-        minutes = ('0' + new Date(timestamp).getMinutes()).slice(-2),
-        displayDate = new Date(timestamp).toDateString(),
-        getDisplayTime = (timestamp, withMilliseconds = false) => `${new Date(timestamp).getHours()}:${minutes}:${seconds}${withMilliseconds ? ' and ' + new Date(timestamp).getMilliseconds() + 'ms': ''}`
+  const parsedTimestamp = new Date(timestamp),
+        seconds = ('0' + parsedTimestamp.getSeconds()).slice(-2),
+        minutes = ('0' + parsedTimestamp.getMinutes()).slice(-2),
+        hours = ('0' + parsedTimestamp.getHours()).slice(-2),
+        displayDate = parsedTimestamp.toDateString(),
+        getDisplayTime = (timestamp, withMilliseconds = false) => `${hours}:${minutes}:${seconds}${withMilliseconds ? ' and ' + parsedTimestamp.getMilliseconds() + 'ms': ''}`
 
   useEffect(() => {
     
