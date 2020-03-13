@@ -32,7 +32,7 @@ const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, gen
   const dataInput = useRef(null)
 
   //display related logic
-  const displayDate = new Date(timestamp).toDateString(),
+  const displayDate = new Date(timestamp).toDateString()
 
   useEffect(() => {
     
