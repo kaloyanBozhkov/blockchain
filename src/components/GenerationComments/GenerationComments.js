@@ -5,7 +5,7 @@ const GenerationComments = ({ getGeneratorLog }) => {
     const text = useRef(null)
     const [updatedArr, setUpdatedArr] = useState(getGeneratorLog())
 
-    //every 300ms get updated log from ref obj through func with closure over it
+    // every 300ms get updated log from ref obj through func with closure over it
     useEffect(() => {
         const interval = setInterval(() => setUpdatedArr([
             ...getGeneratorLog()
@@ -14,7 +14,7 @@ const GenerationComments = ({ getGeneratorLog }) => {
         return () => window.clearInterval(interval)
     }, [getGeneratorLog])
 
-    //when container updates with new logs, keep the scroll to bottom
+    // when container updates with new logs, keep the scroll to bottom
     useEffect(() => {
         text.current.scrollTop = text.current.scrollHeight
     }, [updatedArr])
