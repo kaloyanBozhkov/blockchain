@@ -27,7 +27,7 @@ const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, gen
   const seconds = new Date(timestamp).getSeconds()
   const minutes = new Date(timestamp).getMinutes()
   const displayDate = new Date(timestamp).toDateString()
-  const getDisplayTime = (timestamp, withMilliseconds = false) => `${new Date(timestamp).getHours()}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}${withMilliseconds ? ' and ' + new Date(timestamp).getMilliseconds() + 'ms': ''}`
+  const getDisplayTime = (timestamp, withMilliseconds = false) => `${new Date(timestamp).getHours()}:${('0' + minutes).slice(-2)}:${('0' + seconds).slice(-2)}${withMilliseconds ? ' and ' + new Date(timestamp).getMilliseconds() + 'ms': ''}`
 
   useEffect(() => {
     
