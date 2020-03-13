@@ -17,6 +17,14 @@ const onEditClick = (editing, setEditing, onEditBlock, timestamp, inputField) =>
   setEditing(!editing)
 }
 
+const getDisplayTime = (timestamp, withMilliseconds = false) => {
+  const parsedTimestamp = new Date(timestamp),
+        seconds = ('0' + parsedTimestamp.getSeconds()).slice(-2),
+        minutes = ('0' + parsedTimestamp.getMinutes()).slice(-2),
+        hours = ('0' + parsedTimestamp.getHours()).slice(-2)
+  
+  return `${hours}:${minutes}:${seconds}${withMilliseconds ? ' and ' + parsedTimestamp.getMilliseconds() + 'ms': ''}`
+}
 
 const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, generationTime: { start, end }, onDeleteBlock, onEditBlock }) => {
   
@@ -24,12 +32,7 @@ const Block = ({ timestamp, nonce, data, hash, previousHash, hashDifficulty, gen
   const dataInput = useRef(null)
 
   //display related logic
-  const parsedTimestamp = new Date(timestamp),
-        seconds = ('0' + parsedTimestamp.getSeconds()).slice(-2),
-        minutes = ('0' + parsedTimestamp.getMinutes()).slice(-2),
-        hours = ('0' + parsedTimestamp.getHours()).slice(-2),
-        displayDate = parsedTimestamp.toDateString(),
-        getDisplayTime = (timestamp, withMilliseconds = false) => `${hours}:${minutes}:${seconds}${withMilliseconds ? ' and ' + parsedTimestamp.getMilliseconds() + 'ms': ''}`
+  const displayDate = new Date(timestamp).toDateString(),
 
   useEffect(() => {
     
